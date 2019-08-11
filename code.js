@@ -53,29 +53,29 @@ bot.on('message', async message => {
   if (message.content.toLowerCase().startsWith(`${prefix}verify`)){
 
     if (!message.guild.members.get(bot.user.id).hasPermission("MANAGE_NICKNAMES")){
-      return message.channel.send(`Sorry ${message.author}, but I don't have permissions to manage nicknames.\n**Please contact someone to change my permissions so I can manage nicknames!**`);
+      return message.channel.send(`Sorry ${message.author}, but I don't have permissions to manage nicknames.\n**Please contact someone to change my permissions so I can manage nicknames!**`).then(message => message.delete(5000));
     }
 
     if (!message.guild.members.get(bot.user.id).hasPermission("CHANGE_NICKNAME")){
-      return message.channel.send(`Sorry ${message.author}, but I don't have permissions to change nicknames.\n**Please contact someone to change my permissions so I can change nicknames!**`);
+      return message.channel.send(`Sorry ${message.author}, but I don't have permissions to change nicknames.\n**Please contact someone to change my permissions so I can change nicknames!**`).then(message => message.delete(5000));
     }
 
     if (!verifiedRole){
-      return message.channel.send(`Sorry ${message.author}, but this guild is missing the \`Verified\` role!\n**Please contact someone to add the role!**`);
+      return message.channel.send(`Sorry ${message.author}, but this guild is missing the \`Verified\` role!\n**Please contact someone to add the role!**`).then(message => message.delete(5000));
     }
 
     if (message.member.roles.exists("name", "Verified")){
-      return message.channel.send(`Sorry ${message.author}, but you're already verified!`);
+      return message.channel.send(`Sorry ${message.author}, but you're already verified!`).then(message => message.delete(5000));
     }
 
     if (!args[1]){
-      return message.channel.send(`Sorry ${message.author}, but you need to provide me with a ROBLOX username.`);
+      return message.channel.send(`Sorry ${message.author}, but you need to provide me with a ROBLOX username.`).then(message => message.delete(5000));
     }
 
     var { body } = await snekfetch.get(`http://api.roblox.com/users/get-by-username?username=${args[1]}`)
 
     if (body.errorMessage === "User not found"){
-      return message.channel.send(`Sorry ${message.author}, but could you please provide me with a real ROBLOX username?`);
+      return message.channel.send(`Sorry ${message.author}, but could you please provide me with a real ROBLOX username?`).then(message => message.delete(5000));
     }
 
     var verificationPart1 = verificationCode[Math.floor(Math.random() * verificationCode.length)];
@@ -92,12 +92,12 @@ bot.on('message', async message => {
     .setDescription(`Profile: https://web.roblox.com/users/${body.Id}/profile\n\nReplace your current status with: **${token}**\n\n\n` + "**Chat `done` in __here__ to me when you've changed your status successfully!**")
 
     const location = await message.author.send(goodMessage).then(msg => msg.channel).catch(() => {
-      return message.channel.send(`Sorry ${message.author}, but I couldn't direct message you!`);
+      return message.channel.send(`Sorry ${message.author}, but I couldn't direct message you!`).then(message => message.delete(5000));
     })
     const timeCollectionThing = { max: 1, time: 300000, errors: ['time'] };
     const collected = await location.awaitMessages(response => message.author === response.author && response.content === 'done', timeCollectionThing).catch(() => null);
     if (!collected) {
-      return message.channel.send(`Sorry ${message.author}, but I've waited patiently for five minutes and you haven't chatted **\`done\`**--I've cancelled the verification process.`);
+      return message.channel.send(`Sorry ${message.author}, but I've waited patiently for five minutes and you haven't chatted **\`done\`**--I've cancelled the verification process.`).then(message => message.delete(5000));
     }
     const blurb1 = await rbx.getStatus(await rbx.getIdFromUsername(args[1]));
     const blurb2 = await rbx.getBlurb(await rbx.getIdFromUsername(args[1]));
@@ -111,30 +111,30 @@ bot.on('message', async message => {
       await message.member.setNickname(`${firstCheck} | ${nicknames2}`);
       return message.author.send(`${welcomeMessage}`)
     }else{
-      return message.channel.send(`Sorry ${message.author}, but I couldn't find the code on your blurb or status.`).then;
+      return message.channel.send(`Sorry ${message.author}, but I couldn't find the code on your blurb or status.`).then(message => message.delete(5000));
     }
     return message.channel.send(`I should never run into this last message.\n**If I do, you fucked up somewhere in the code.**`)
   }
 
   if (message.content.toLowerCase().startsWith(`${prefix}xp`)){
     if (!message.member.roles.exists("name", `${officerRole}`)){
-      return message.channel.send(`Sorry ${message.author}, but only users with the **\`${officerRoleE}\`** can run that command!`).then;
+      return message.channel.send(`Sorry ${message.author}, but only users with the **\`${officerRoleE}\`** can run that command!`).then(message => message.delete(5000));
     }
     if (!args[1]){
-      return message.channel.send(`Sorry ${message.author}, but you're missing the first argument--add or remove?\n**Adding XP: \`${prefix}xp add 1 username1, username2, username3...\`\nRemoving XP: \`${prefix}xp remove 1 username1, username2, username3...\`**`);
+      return message.channel.send(`Sorry ${message.author}, but you're missing the first argument--add or remove?\n**Adding XP: \`${prefix}xp add 1 username1, username2, username3...\`\nRemoving XP: \`${prefix}xp remove 1 username1, username2, username3...\`**`).then(message => message.delete(5000));
     }else if (args[1].toLowerCase() !== "add" && args[1].toLowerCase() !== "remove"){
-      return message.channel.send(`Sorry ${message.author}, but you didn't provide me with a correct first argument--add or remove?\n**Adding XP: \`${prefix}xp add 1 username1, username2, username3...\`\nRemoving XP: \`${prefix}xp remove 1 username1, username2, username3...\`**`);
+      return message.channel.send(`Sorry ${message.author}, but you didn't provide me with a correct first argument--add or remove?\n**Adding XP: \`${prefix}xp add 1 username1, username2, username3...\`\nRemoving XP: \`${prefix}xp remove 1 username1, username2, username3...\`**`).then(message => message.delete(5000));
     }else{
       if (!args[2]){
-        return message.channel.send(`Sorry ${message.author}, but you're missing the second argument--number of XP?\n**Adding XP: \`${prefix}xp add 1 username1, username2, username3...\`\nRemoving XP: \`${prefix}xp remove 1 username1, username2, username3...\`**`);
+        return message.channel.send(`Sorry ${message.author}, but you're missing the second argument--number of XP?\n**Adding XP: \`${prefix}xp add 1 username1, username2, username3...\`\nRemoving XP: \`${prefix}xp remove 1 username1, username2, username3...\`**`).then(message => message.delete(5000));
       }else if (isNaN(Number(args[2]))){
-        return message.channel.send(`Sorry ${message.author}, but you didn't provide me with a real number.\n**Adding XP: \`${prefix}xp add 1 username1, username2, username3...\`\nRemoving XP: \`${prefix}xp remove 1 username1, username2, username3...\`**`);
+        return message.channel.send(`Sorry ${message.author}, but you didn't provide me with a real number.\n**Adding XP: \`${prefix}xp add 1 username1, username2, username3...\`\nRemoving XP: \`${prefix}xp remove 1 username1, username2, username3...\`**`).then(message => message.delete(5000));
       }else if (args[2] < 0){
-        return message.channel.send(`Sorry ${message.author}, but you need to provide me with a positive number.\n**Adding XP: \`${prefix}xp add 1 username1, username2, username3...\`\nRemoving XP: \`${prefix}xp remove 1 username1, username2, username3...\`**`);
+        return message.channel.send(`Sorry ${message.author}, but you need to provide me with a positive number.\n**Adding XP: \`${prefix}xp add 1 username1, username2, username3...\`\nRemoving XP: \`${prefix}xp remove 1 username1, username2, username3...\`**`).then(message => message.delete(5000));
       }else if (args[2] > maxXP){
-        return message.channel.send(`Sorry ${message.author}, but you need to provide mw with a number that's less than the max XP--currently set at ${maxXP} XP.\n**Adding XP: \`${prefix}xp add 1 username1, username2, username3...\`\nRemoving XP: \`${prefix}xp remove 1 username1, username2, username3...\`**`);
+        return message.channel.send(`Sorry ${message.author}, but you need to provide mw with a number that's less than the max XP--currently set at ${maxXP} XP.\n**Adding XP: \`${prefix}xp add 1 username1, username2, username3...\`\nRemoving XP: \`${prefix}xp remove 1 username1, username2, username3...\`**`).then(message => message.delete(5000));
       }else if (!args[3]){
-        return message.channel.send(`Sorry ${message.author}, but you're missing the third argument--the usernames!\n**Adding XP: \`${prefix}xp add 1 username1, username2, username3...\`\nRemoving XP: \`${prefix}xp remove 1 username1, username2, username3...\`**`);
+        return message.channel.send(`Sorry ${message.author}, but you're missing the third argument--the usernames!\n**Adding XP: \`${prefix}xp add 1 username1, username2, username3...\`\nRemoving XP: \`${prefix}xp remove 1 username1, username2, username3...\`**`).then(message => message.delete(5000));
       }else{
         if (args[1].toLowerCase() === "add"){
           var userArray = message.content.slice(message.content.indexOf(message.content.split(" ")[3])).split(', ');
@@ -166,7 +166,7 @@ bot.on('message', async message => {
                   .setColor(0x5aa9fe)
                   .setTitle(`Insertion`)
                   .setDescription(`Inserted and updated **\`${userArray[i].toLowerCase()}\`**'s profile within my database!`)
-                await message.channel.send(embed);
+                await message.channel.send(embed).then(message => message.delete(5000));
                 var auditLogEmbed = new Discord.RichEmbed()
                   .setColor(0xff793b)
                   .setTitle(`**Add**`)
@@ -180,7 +180,7 @@ bot.on('message', async message => {
                   .setColor(0x5aa9fe)
                   .setTitle(`Insertion`)
                   .setDescription(`Inserted and updated **\`${userArray[i].toLowerCase()}\`**'s profile within my database!`)
-                await message.channel.send(embed);
+                await message.channel.send(embed).then(message => message.delete(5000));
                 var auditLogEmbed = new Discord.RichEmbed()
                   .setColor(0xff793b)
                   .setTitle(`**Add**`)
@@ -286,7 +286,7 @@ bot.on('message', async message => {
                   .setColor(0x5aa9fe)
                   .setTitle(`Insertion`)
                   .setDescription(`Inserted and updated **\`${userArray[i].toLowerCase()}\`**'s profile within my database!`)
-                await message.channel.send(embed);
+                await message.channel.send(embed).then(message => message.delete(5000));
                 var auditLogEmbed = new Discord.RichEmbed()
                   .setColor(0xff793b)
                   .setTitle(`**Remove**`)
@@ -305,7 +305,7 @@ bot.on('message', async message => {
                   .setColor(0x5aa9fe)
                   .setTitle(`Insertion`)
                   .setDescription(`Inserted and updated **\`${userArray[i].toLowerCase()}\`**'s profile within my database!`)
-                await message.channel.send(embed).then;
+                await message.channel.send(embed).then(message => message.delete(5000));
                 var auditLogEmbed = new Discord.RichEmbed()
                   .setColor(0xff793b)
                   .setTitle(`**Remove**`)
@@ -381,16 +381,16 @@ bot.on('message', async message => {
 
   if (message.content.toLowerCase().startsWith(`${prefix}setup`)){
     if (message.author.id !== message.guild.owner.id){
-      return message.channel.send(`Sorry ${message.author}, but only the guild owner (${message.guild.owner}) can run that command!`);
+      return message.channel.send(`Sorry ${message.author}, but only the guild owner (${message.guild.owner}) can run that command!`).then(message => message.delete(5000));
     }
     if (groupID === 0){
-      return message.channel.send(`Sorry ${message.author}, but I'm missing the group's ID--which can be entered in the config.json file.`);
+      return message.channel.send(`Sorry ${message.author}, but I'm missing the group's ID--which can be entered in the config.json file.`).then(message => message.delete(5000));
     }
     var {body} = await snekfetch.get(`https://groups.roblox.com/v1/groups/${groupID}`)
     if (body.errors){
-      return message.channel.send(`Sorry ${message.author}, but you provided me with an invalid group ID in the config.json file.`);
+      return message.channel.send(`Sorry ${message.author}, but you provided me with an invalid group ID in the config.json file.`).then(message => message.delete(5000));
     }
-    await message.channel.send(`Pulling information from **${body.name}** (\`${body.id}\`)`);
+    await message.channel.send(`Pulling information from **${body.name}** (\`${body.id}\`)`).then(message => message.delete(2000));
     var {body} = await snekfetch.get(`https://groups.roblox.com/v1/groups/${groupID}/roles`)
     var roles = [];
     var xpData = [];
@@ -405,7 +405,7 @@ bot.on('message', async message => {
         })
       }else{
         const location = await message.channel.send(`How many XP should be required to achieve the rank of **\`${body.roles[i].name}\`**?`).then(msg => msg.channel).catch(() => {
-          return message.channel.send(`Sorry ${message.author}, but I couldn't direct message you.`);
+          return message.channel.send(`Sorry ${message.author}, but I couldn't direct message you.`).then(message => message.delete(6000));
         })
         const timeCollectionThing = { max: 1, time: 30000, errors: ['time'] };
         const collected = await location.awaitMessages(response => message.author === response.author, timeCollectionThing).catch(() => null);
@@ -444,12 +444,12 @@ bot.on('message', async message => {
 
   if (message.content.toLowerCase().startsWith(`${prefix}view`)){
     if (!args[1]){
-      return message.channel.send(`Sorry ${message.author}, but you're missing the first argument--the username!\n**\`${prefix}view username1\`**`);
+      return message.channel.send(`Sorry ${message.author}, but you're missing the first argument--the username!\n**\`${prefix}view username1\`**`).then(message => message.delete(5000));
     }
 
     var { body } = await snekfetch.get(`http://api.roblox.com/users/get-by-username?username=${args[1]}`)
     if (body.errorMessage === "User not found"){
-      return message.channel.send(`Sorry ${message.author}, but you gave me an invalid username!\n**\`${prefix}view username1\`**`);
+      return message.channel.send(`Sorry ${message.author}, but you gave me an invalid username!\n**\`${prefix}view username1\`**`).then(message => message.delete(5000));
     }
     var userID = body.Id
 
@@ -462,7 +462,7 @@ bot.on('message', async message => {
     var currentXP;
 
     if (!body){
-      return message.channel.send(`Sorry ${message.author}, but the username that you provided me isn't registered in my database yet.`)
+      return message.channel.send(`Sorry ${message.author}, but the username that you provided me isn't registered in my database yet.`).then(message => message.delete(5000))
     }else{
 
       currentXP = body.xpValue
@@ -547,7 +547,7 @@ bot.on('message', async message => {
         .setColor(0x45ff9f)
         .setThumbnail(`${mugShot}`)
         .setDescription(`${usernameHeader}\n${currentRankAndPoints}\n${percentBar} ${percentAge}%\n${remainingError}`)
-      return message.reply(response)
+      return message.reply(response).then(message => message.delete(30000))
     }
 
   }
