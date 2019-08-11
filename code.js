@@ -1,13 +1,13 @@
 /* SETTINGS START */
 const prefix = "!"
-const groupID = 123123;
+const groupID = 4781526;
 const bot_token = process.env.botToken;
 const rblxCookie = process.env.rblxCookie;
-const officerRoleE = "Officer";
-const welcomeMessage = "Welcome!";
+const officerRoleE = "Officers";
+const welcomeMessage = "Welcome to the Delta Regiment Communication Server! DM an Officer or higher with your username and timezone if you need permissions.";
 const maxXP = 10;
-const xpAuditLogChannelID = "123123";
-const mainChatChannelID = "123123";
+const xpAuditLogChannelID = "609892425888169994";
+const mainChatChannelID = "607837479919419402";
 const fireBaseURL = process.env.fireBaseURL;
 /* SETTINGS END */
 
